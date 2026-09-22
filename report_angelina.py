@@ -64,6 +64,28 @@ def get_report_date(sheet):
 
 
 # ============================================================
+# СОРТУВАННЯ
+# ============================================================
+
+def effort_sort_value(value: str) -> int:
+    """
+    Перетворює значення колонки "зусилля" у число для сортування.
+    Порожні/нечислові значення (наприклад "—") вважаються 0.
+    """
+    cleaned = (
+        str(value)
+        .replace(" ", "")
+        .replace(" ", "")
+        .replace("—", "0")
+    )
+
+    try:
+        return int(cleaned)
+    except ValueError:
+        return 0
+
+
+# ============================================================
 # ОТРИМАННЯ ДАНИХ
 # ============================================================
 
@@ -111,6 +133,12 @@ def get_managers_data(sheet):
             "offers": offers or "—",
             "subscriptions": subscriptions or "—",
         })
+
+    # Сортуємо за зусиллями за вчора: від більшого до меншого.
+    managers.sort(
+        key=lambda manager: effort_sort_value(manager["efforts"]),
+        reverse=True,
+    )
 
     return managers
 
