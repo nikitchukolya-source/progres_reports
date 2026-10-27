@@ -26,6 +26,9 @@ GOOGLE_CREDENTIALS_FILE = "credentials.json"
 
 EXCLUDED_MANAGERS = {
     "Ангеліна Молокова",
+    "Гіналюк",
+    "Боднар",
+    "Бондар",
 }
 
 
@@ -119,8 +122,8 @@ def get_managers_data(sheet):
         if "стажер" in name.lower():
             continue
 
-        # Не беремо тімліда
-        if name in EXCLUDED_MANAGERS:
+        # Не беремо тімліда та звільнених менеджерів
+        if any(excluded.lower() in name.lower() for excluded in EXCLUDED_MANAGERS):
             continue
 
         efforts = str(row[8]).strip()
